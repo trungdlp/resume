@@ -1,0 +1,374 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % seperation between body and page edge from the top
+    bottom=2 cm, % seperation between body and page edge from the bottom
+    left=2 cm, % seperation between body and page edge from the left
+    right=2 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 0, 0} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Trung Duong Le Phuoc's Resume},
+    pdfauthor={Trung Duong Le Phuoc},
+    pdfcreator={LaTeX with RenderCV},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+\usepackage{charter}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+\pagenumbering{gobble} % no page numbering
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0 cm + 0.00001 cm
+    }{
+        0 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{Last updated in February 2025}\hspace{\widthof{Last updated in February 2025}}
+    }}}%
+  }%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$|$}
+
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont TRUNG DUONG LE PHUOC
+
+        \vspace{5 pt}
+
+        \normalsize
+        \mbox{Ho Chi Minh, Viet Nam}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{mailto:trungdlp.dev@gmail.com}{trungdlp.dev@gmail.com}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{tel:+84-363-652-806}{(+84) 363 652 806}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://www.linkedin.com/in/trungdlp/}{linkedin.com/in/trungdlp}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://github.com/trungdlp}{github.com/trungdlp}}%
+    \end{header}
+
+    \vspace{5 pt - 0.3 cm}
+
+    \placelastupdatedtext
+
+    \section{SUMMARY}
+
+    \begin{onecolentry}
+        Backend engineer specializing in Go, passionate about applying cutting-edge technologies to solve business problems. Experienced in designing scalable, high-performance systems and optimizing cloud infrastructure for efficiency and cost savings. Strong problem-solving skills with a focus on improving performance, streamlining processes, and driving innovation.
+    \end{onecolentry}
+
+    \section{EXPERIENCE}
+
+    \begin{twocolentry}{
+        Oct 2021 - Present
+    }
+        \textbf{Backend Engineer}, Wolffun Game -- Ho Chi Minh, VN
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        Wolffun Game is a top blockchain gaming company behind the Thetan ecosystem, bringing players, creators, and developers together. Thetan Arena reached over 12 million players within a month of launch and surpassed 20 million players in just three months.
+    \end{onecolentry}
+
+    \vspace{0.20 cm}
+    \begin{twocolentry}{
+        2021 - 2022
+    }
+        \textbf{Thetan Arena} - The first mobile MOBA game based on blockchain | \href{https://thetanarena.com}{Click to view}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Developed key features: Chat \& Social Interaction, Growth Hacking, Staking, In-game/Web3 Quests and Flash Sale on NFT marketplace.
+            \item Enhanced in-game real-time communication by using Protobuf with a custom WebSocket protocol (for room management, reconnections, channels, broadcasting, etc.), replacing the traditional JSON-based WebSocket approach.
+            \item Initially, the real-time service faced scalability issues with a single replica handling millions of players, creating a bottleneck. This was resolved by implementing an event-driven architecture with Redis for shared resources and NATS for message streaming, enabling horizontal scalability.
+            \item Saved hundreds of thousands of dollars by fine-tuning the allocation of Kubernetes resources.
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.20 cm}
+    \begin{twocolentry}{
+        2022 - Mid 2023
+    }
+        \textbf{Thetan Rivals} - An action-packed casual royale party game | \href{https://thetanrivals.com}{Click to view}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        As a foundational engineer, I played a key role in shaping the backend architecture and driving development efficiency.
+        \begin{highlights}
+            \item Designed and built core systems, ensuring scalability and high performance.
+            \item Applied microservices architecture to streamline the system and improve maintainability.
+            \item Built in-house tools to boost productivity, including a microservice code generator, unit testing generator, and a setup tool for new team members.
+            \item Implemented a remote config and experimental system, reducing redeployments and enabling faster testing and iteration. Allowed POs and GDs to run A/B tests for data-driven decision-making.
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.20 cm}
+    \begin{twocolentry}{
+        Late 2023
+    }
+        \textbf{Thetan Creator} - Allows players to personalize their unique characters | \href{https://thetancreator.com}{Click to view}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        Continuing in my role as a foundational engineer, I helped define the backend architecture and improve development efficiency.
+        \begin{highlights}
+            \item Developed cloud storage integration for user-generated artwork (UGC), enabling seamless sync across multiple devices.
+            \item Implemented an event-driven architecture to synchronize user-created assets with Thetan game ecosystems in near real-time.
+            \item Optimized image processing with imgproxy, converting images format for better quality and smaller size, cutting bandwidth use by over 90\%.
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.20 cm}
+    \begin{twocolentry}{
+        Early 2024
+    }
+        \textbf{Thetan World} - A GameFi platform revolutionizing the gaming industry | \href{https://thetanworld.com}{Click to view}
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        As a key engineer, I contributed to developing most of the essential features that had a significant impact on the business.
+        \begin{highlights}
+            \item Provide guidance and collaborate with teams to design core systems that ensure scalability and high performance.
+            \item Spend time reviewing design decisions, code, and leading weekly internal sharing sessions to help our teams improve their skills.
+            \item Used our proven technologies and tools to implement essential features, such as Inventory, Trading System, Equipment, and Profile.
+            \item Collaborated with Data Scientists, Product Owners, and the CTO to research and develop fraud detection systems for blocking anomalous actions in real time.
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{EDUCATION}
+
+    \begin{twocolentry}{
+        2018 - 2022
+    }
+        \textbf{Thu Dau Mot University}, Bachelor of Science in Software Engineering
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item GPA: Excellent
+        \end{highlights}
+    \end{onecolentry}
+
+    \vspace{0.20 cm}
+    \begin{twocolentry}{
+        2024 - 2026
+    }
+        \textbf{University Of Economics Ho Chi Minh}, Master of Business Administration
+    \end{twocolentry}
+
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item In Progress
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{CERTIFICATES}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Google Cloud - Professional Cloud Architect (Nov 2022): \href{https://google.com/certificates}{View certificate}
+            \item Scylla - S201: Data Modeling and Application Development (Aug 2023): \href{https://scylla.com/certificates}{View certificate}
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{AWARDS}
+
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Top 50 at the 2018 ACM/ICPC Asia Hanoi Regional Contest
+            \item Honorable at the 2019 ACM/ICPC Asia Danang Regional Contest
+            \item Second prize at the Scientific Research Student Award in both 2019–2020 and 2020–2021
+        \end{highlights}
+    \end{onecolentry}
+
+    \section{TECHNOLOGIES}
+
+    \begin{onecolentry}
+        \textbf{Programming Languages:} Go is my primary focus.
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Databases:} MongoDB, Redis, Scylla.
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Cloud \& DevOps:} Google Cloud Platform (GCP), Kubernetes (k8s), Docker, Github Actions, Terraform.
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Protocol \& Streaming:} gRPC, Protobuf, WebSocket, Redis Pub/Sub, NATS, Google PubSub.
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{API \& System Design:} RESTful API, Microservice Architecture, Outbox, CQRS, Event Sourcing.
+    \end{onecolentry}
+
+    \vspace{0.2 cm}
+
+    \begin{onecolentry}
+        \textbf{Monitoring, Logging, Tracing and Profiling:} Prometheus, Grafana, Loki, OpenTelemetry, Jaeger, Pyroscope.
+    \end{onecolentry}
+
+    \section{SOFT SKILLS}
+
+    \begin{onecolentry}
+        \begin{highlightsforbulletentries}
+            \item Critical thinking
+            \item Problem solving
+            \item Technical mentorship
+            \item Cross-functional collaboration
+        \end{highlightsforbulletentries}
+    \end{onecolentry}
+
+\end{document}
